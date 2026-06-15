@@ -520,6 +520,14 @@ const PLACES = [
     "desc": "A scenic campsite on the Tjörnes peninsula near Húsavík with sweeping sea views. Only nice if the weather is good."
   },
   {
+    "name": "Vaglaskógur camp site",
+    "region": "North Iceland",
+    "lat": 65.7147,
+    "lng": -17.9018,
+    "type": "Campsite",
+    "desc": "A peaceful campsite among the birch trees of Vaglaskógur in Fnjóskadalur, a short drive east of Akureyri."
+  },
+  {
     "name": "Guðrúnarlaug",
     "region": "West Iceland",
     "lat": 65.246,
