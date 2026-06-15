@@ -140,18 +140,23 @@ function showCard(p) {
 
 async function loadWikiImage(title) {
   if (imageCache.has(title)) return imageCache.get(title);
-  const variants = [title, `${title} Iceland`, title.replace('Þ','Th').replace('ð','d')];
-  for (const v of variants) {
+  const queries = [`${title} Iceland`, title];
+  for (const q of queries) {
     try {
-      const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`);
+      const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=3&prop=pageimages&piprop=original%7Cthumbnail&pithumbsize=600&origin=*`;
+      const r = await fetch(url);
       if (!r.ok) continue;
       const j = await r.json();
-      if (j && j.thumbnail && j.thumbnail.source) {
-        const url = j.thumbnail.source.replace(/\/\d+px-/, '/900px-');
-        imageCache.set(title, url);
-        return url;
+      const pages = j && j.query && j.query.pages ? Object.values(j.query.pages) : [];
+      pages.sort((a, b) => (a.index || 99) - (b.index || 99));
+      for (const p of pages) {
+        const src = (p.original && p.original.source) || (p.thumbnail && p.thumbnail.source);
+        if (src) {
+          imageCache.set(title, src);
+          return src;
+        }
       }
-    } catch(e) {}
+    } catch (e) {}
   }
   imageCache.set(title, null);
   return null;
