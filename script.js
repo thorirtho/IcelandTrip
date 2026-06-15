@@ -1,13 +1,19 @@
 
 const REGION_COLORS = {
+  "Capital Region": "#db2777",
+  "Reykjanes": "#059669",
   "South Iceland": "#0f766e",
+  "Highlands": "#6366f1",
   "East Iceland": "#2563eb",
   "North Iceland": "#7c3aed",
   "West Iceland": "#b45309",
   "Westfjords": "#be123c"
 };
 const REGION_EMOJI = {
+  "Capital Region": "🏙️",
+  "Reykjanes": "♨️",
   "South Iceland": "🌋",
+  "Highlands": "⛰️",
   "East Iceland": "🏔️",
   "North Iceland": "❄️",
   "West Iceland": "🌊",
@@ -67,10 +73,11 @@ function render() {
   $('visibleCount').textContent = currentPlaces.length;
   $('placeList').innerHTML = currentPlaces.map((p,i) => {
     const color = REGION_COLORS[p.region] || '#0f766e';
-    return `<div class="place-item" data-index="${i}">
+    const isRec = p.recommended !== false;
+    return `<div class="place-item${isRec ? ' recommended' : ''}" data-index="${i}">
       <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background-image:linear-gradient(135deg, ${color}, #38bdf8)"></div>
       <div class="place-text">
-        <strong>${escapeHtml(p.name)}</strong>
+        <strong>${isRec ? '<span class="star">★</span> ' : ''}${escapeHtml(p.name)}</strong>
         <span>${escapeHtml(p.region)} · ${escapeHtml(p.type)}</span>
         <em class="tag">${escapeHtml(shortDesc(p.desc))}</em>
       </div>
@@ -97,13 +104,14 @@ function lazyLoadThumbs() {
 
 function makeMarker(p, idx) {
   const color = REGION_COLORS[p.region] || '#0f766e';
+  const isRec = p.recommended !== false;
   const icon = L.divIcon({
     className:'custom-pin',
-    html:`<div class="pin" style="background:${color}"><span>${REGION_EMOJI[p.region] || '•'}</span></div>`,
+    html:`<div class="pin${isRec ? ' rec' : ''}" style="background:${color}"><span>${isRec ? '★' : '•'}</span></div>`,
     iconSize:[30,42], iconAnchor:[15,30], popupAnchor:[0,-28]
   });
   const marker = L.marker([p.lat, p.lng], {icon});
-  marker.bindPopup(`<strong>${escapeHtml(p.name)}</strong><br><span>${escapeHtml(p.type)}</span>`);
+  marker.bindPopup(`<strong>${isRec ? '★ ' : ''}${escapeHtml(p.name)}</strong><br><span>${escapeHtml(p.type)}</span>`);
   marker.on('click', () => showCard(p));
   return marker;
 }
@@ -119,8 +127,9 @@ function fitAll() {
 }
 function hideCard() { $('card').classList.remove('visible'); }
 function showCard(p) {
-  $('cardTitle').textContent = p.name;
-  $('cardRegion').textContent = `${p.region} · ${p.type}`;
+  const isRec = p.recommended !== false;
+  $('cardTitle').textContent = (isRec ? '★ ' : '') + p.name;
+  $('cardRegion').textContent = `${isRec ? 'Recommended · ' : ''}${p.region} · ${p.type}`;
   $('cardText').textContent = p.desc;
   $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' Iceland')}`;
   $('imageLink').href = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(p.name + ' Iceland')}`;
