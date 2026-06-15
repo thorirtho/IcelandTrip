@@ -14,6 +14,7 @@ const REGION_EMOJI = {
   "North West Iceland": "🧭"
 };
 let map, layer, activeRegion = "All", currentPlaces = [...PLACES];
+const imageCache = new Map();
 const $ = (id) => document.getElementById(id);
 
 function init() {
@@ -64,8 +65,39 @@ function render() {
   layer.clearLayers();
   currentPlaces.forEach((p, idx) => layer.addLayer(makeMarker(p, idx)));
   $('visibleCount').textContent = currentPlaces.length;
-  $('placeList').innerHTML = currentPlaces.map((p,i) => `<div class="place-item" data-index="${i}"><strong>${escapeHtml(p.name)}</strong><span>${escapeHtml(p.region)} · ${escapeHtml(p.type)}</span><em class="tag">${escapeHtml(shortDesc(p.desc))}</em></div>`).join('');
+  $('placeList').innerHTML = currentPlaces.map((p,i) => {
+    const color = REGION_COLORS[p.region] || '#0f766e';
+    const emoji = REGION_EMOJI[p.region] || '🇮🇸';
+    return `<div class="place-item" data-index="${i}">
+      <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background:linear-gradient(135deg, ${color}, #38bdf8)"><span class="thumb-emoji">${emoji}</span></div>
+      <div class="place-text">
+        <strong>${escapeHtml(p.name)}</strong>
+        <span>${escapeHtml(p.region)} · ${escapeHtml(p.type)}</span>
+        <em class="tag">${escapeHtml(shortDesc(p.desc))}</em>
+      </div>
+    </div>`;
+  }).join('');
   document.querySelectorAll('.place-item').forEach(el => el.addEventListener('click', () => focusPlace(currentPlaces[Number(el.dataset.index)])));
+  lazyLoadThumbs();
+}
+
+function lazyLoadThumbs() {
+  const thumbs = document.querySelectorAll('.place-thumb');
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      obs.unobserve(el);
+      const name = el.dataset.name;
+      loadWikiImage(name).then(url => {
+        if (url) {
+          el.style.backgroundImage = `url('${url}')`;
+          el.classList.add('loaded');
+        }
+      });
+    });
+  }, { root: $('placeList'), rootMargin: '200px' });
+  thumbs.forEach(t => io.observe(t));
 }
 
 function makeMarker(p, idx) {
@@ -107,15 +139,21 @@ function showCard(p) {
 }
 
 async function loadWikiImage(title) {
+  if (imageCache.has(title)) return imageCache.get(title);
   const variants = [title, `${title} Iceland`, title.replace('Þ','Th').replace('ð','d')];
   for (const v of variants) {
     try {
       const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(v)}`);
       if (!r.ok) continue;
       const j = await r.json();
-      if (j && j.thumbnail && j.thumbnail.source) return j.thumbnail.source.replace(/\/\d+px-/, '/900px-');
+      if (j && j.thumbnail && j.thumbnail.source) {
+        const url = j.thumbnail.source.replace(/\/\d+px-/, '/900px-');
+        imageCache.set(title, url);
+        return url;
+      }
     } catch(e) {}
   }
+  imageCache.set(title, null);
   return null;
 }
 function shortDesc(s){ return s.length > 62 ? s.slice(0,61) + '…' : s; }
