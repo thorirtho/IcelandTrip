@@ -61,6 +61,10 @@ function init() {
   map = L.map('map', { zoomControl: true, worldCopyJump: false, preferCanvas: true }).setView([64.96, -18.9], 6);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
+    keepBuffer: 8,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    crossOrigin: true,
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
   layer = window.L.markerClusterGroup ? L.markerClusterGroup({ showCoverageOnHover:false, maxClusterRadius:48 }) : L.layerGroup();
