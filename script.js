@@ -20,7 +20,36 @@ const REGION_EMOJI = {
   "Westfjords": "🧭"
 };
 let map, layer, activeRegion = "All", currentPlaces = [...PLACES];
-const imageCache = new Map();
+const CACHE_KEY = 'iceland.wikiImg.v1';
+const CACHE_TTL = 1000 * 60 * 60 * 24 * 30; // 30 days
+const imageCache = loadPersistedCache();
+
+function loadPersistedCache() {
+  const m = new Map();
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return m;
+    const obj = JSON.parse(raw);
+    const now = Date.now();
+    for (const [k, v] of Object.entries(obj)) {
+      if (v && (now - v.t) < CACHE_TTL) m.set(k, v.u);
+    }
+  } catch (e) {}
+  return m;
+}
+let persistTimer = null;
+function persistCache() {
+  if (persistTimer) return;
+  persistTimer = setTimeout(() => {
+    persistTimer = null;
+    try {
+      const obj = {};
+      const now = Date.now();
+      for (const [k, u] of imageCache.entries()) obj[k] = { u, t: now };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(obj));
+    } catch (e) {}
+  }, 500);
+}
 const $ = (id) => document.getElementById(id);
 
 function init() {
@@ -158,12 +187,14 @@ async function loadWikiImage(title) {
         const src = (p.original && p.original.source) || (p.thumbnail && p.thumbnail.source);
         if (src) {
           imageCache.set(title, src);
+          persistCache();
           return src;
         }
       }
     } catch (e) {}
   }
   imageCache.set(title, null);
+  persistCache();
   return null;
 }
 function shortDesc(s){ return s.length > 62 ? s.slice(0,61) + '…' : s; }
