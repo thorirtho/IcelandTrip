@@ -69,7 +69,7 @@ function render() {
     const color = REGION_COLORS[p.region] || '#0f766e';
     const emoji = REGION_EMOJI[p.region] || '🇮🇸';
     return `<div class="place-item" data-index="${i}">
-      <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background:linear-gradient(135deg, ${color}, #38bdf8)"><span class="thumb-emoji">${emoji}</span></div>
+      <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background-image:linear-gradient(135deg, ${color}, #38bdf8)"><span class="thumb-emoji">${emoji}</span></div>
       <div class="place-text">
         <strong>${escapeHtml(p.name)}</strong>
         <span>${escapeHtml(p.region)} · ${escapeHtml(p.type)}</span>
