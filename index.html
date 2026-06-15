@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iceland Interesting Places Map</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🇮🇸</div>
+        <div>
+          <h1>Iceland trip map</h1>
+          <p>Interesting places around the island</p>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-title">Road-trip explorer</div>
+        <div class="hero-text">Search, filter by region, then click a marker or place name to open a photo card and map link.</div>
+      </div>
+
+      <div class="controls">
+        <label class="sr-only" for="search">Search places</label>
+        <input id="search" class="search" type="search" placeholder="Search waterfalls, hot springs, puffins…" />
+        <div id="chips" class="chips" aria-label="Region filters"></div>
+        <button id="fitBtn" class="fit-btn">Show all places</button>
+      </div>
+
+      <div class="mini-stats">
+        <div><strong id="visibleCount">0</strong><span>visible</span></div>
+        <div><strong id="totalCount">0</strong><span>places</span></div>
+        <div><strong>5</strong><span>regions</span></div>
+      </div>
+
+      <div id="placeList" class="place-list"></div>
+      <p class="note">Uses OpenStreetMap tiles and public Wikipedia thumbnails when available.</p>
+    </aside>
+
+    <section class="map-wrap">
+      <div id="map" class="map"></div>
+      <div class="map-toolbar">
+        <button id="zoomIceland" class="glass-btn">Center Iceland</button>
+        <span class="glass-pill">Click markers for details</span>
+      </div>
+
+      <article id="card" class="floating-card" aria-live="polite">
+        <button id="closeCard" class="close" aria-label="Close card">×</button>
+        <div id="cardImg" class="card-img"><div id="cardFallback" class="card-fallback"></div></div>
+        <div class="card-body">
+          <div id="cardRegion" class="card-kicker"></div>
+          <h2 id="cardTitle" class="card-title"></h2>
+          <p id="cardText" class="card-text"></p>
+          <div class="card-actions">
+            <a id="mapsLink" class="btn primary" target="_blank" rel="noopener">Open in Google Maps</a>
+            <a id="imageLink" class="btn secondary" target="_blank" rel="noopener">Find photos</a>
+          </div>
+        </div>
+      </article>
+
+      <div id="loadWarning" class="load-warning">
+        <strong>Map library did not load.</strong>
+        <span>Check your internet connection or allow scripts from unpkg.com and tiles from openstreetmap.org.</span>
+      </div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="places.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
