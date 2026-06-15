@@ -496,6 +496,22 @@ const PLACES = [
     "desc": "A small historic coastal settlement with dramatic lava cliffs and views of Snæfellsjökull."
   },
   {
+    "name": "Lambeyri",
+    "region": "North Iceland",
+    "lat": 65.4655,
+    "lng": -19.3493,
+    "type": "Farm / stay",
+    "desc": "A peaceful spot in Skagafjörður near Varmahlíð, well placed for visits to the natural hot spring Fosslaug a short drive away."
+  },
+  {
+    "name": "Fosslaug",
+    "region": "North Iceland",
+    "lat": 65.4938,
+    "lng": -19.3577,
+    "type": "Natural hot spring",
+    "desc": "A small natural geothermal pool next to Reykjafoss waterfall in Skagafjörður, reached by a short walk from the parking area."
+  },
+  {
     "name": "Mánabakki camp site",
     "region": "North Iceland",
     "lat": 66.142,
