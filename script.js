@@ -83,11 +83,8 @@ function render() {
 
 function lazyLoadThumbs() {
   const thumbs = document.querySelectorAll('.place-thumb');
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      obs.unobserve(el);
+  thumbs.forEach((el, i) => {
+    setTimeout(() => {
       const name = el.dataset.name;
       loadWikiImage(name).then(url => {
         if (url) {
@@ -95,9 +92,8 @@ function lazyLoadThumbs() {
           el.classList.add('loaded');
         }
       });
-    });
-  }, { root: $('placeList'), rootMargin: '200px' });
-  thumbs.forEach(t => io.observe(t));
+    }, i * 60);
+  });
 }
 
 function makeMarker(p, idx) {
@@ -128,7 +124,8 @@ function showCard(p) {
   $('cardRegion').textContent = `${p.region} · ${p.type}`;
   $('cardText').textContent = p.desc;
   $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' Iceland')}`;
-  $('imageLink').href = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(p.name + ' Iceland')}`;
+  $('imageLink').href = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(p.name + ' Iceland')}`;
+  $('imageLink').textContent = 'Open Wikipedia';
   $('cardFallback').textContent = REGION_EMOJI[p.region] || '🇮🇸';
   const img = $('cardImg');
   img.style.backgroundImage = `linear-gradient(135deg, ${REGION_COLORS[p.region] || '#0f766e'}, #38bdf8)`;
