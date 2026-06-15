@@ -4,14 +4,14 @@ const REGION_COLORS = {
   "East Iceland": "#2563eb",
   "North Iceland": "#7c3aed",
   "West Iceland": "#b45309",
-  "North West Iceland": "#be123c"
+  "Westfjords": "#be123c"
 };
 const REGION_EMOJI = {
   "South Iceland": "🌋",
   "East Iceland": "🏔️",
   "North Iceland": "❄️",
   "West Iceland": "🌊",
-  "North West Iceland": "🧭"
+  "Westfjords": "🧭"
 };
 let map, layer, activeRegion = "All", currentPlaces = [...PLACES];
 const imageCache = new Map();
@@ -67,9 +67,8 @@ function render() {
   $('visibleCount').textContent = currentPlaces.length;
   $('placeList').innerHTML = currentPlaces.map((p,i) => {
     const color = REGION_COLORS[p.region] || '#0f766e';
-    const emoji = REGION_EMOJI[p.region] || '🇮🇸';
     return `<div class="place-item" data-index="${i}">
-      <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background-image:linear-gradient(135deg, ${color}, #38bdf8)"><span class="thumb-emoji">${emoji}</span></div>
+      <div class="place-thumb" data-name="${escapeHtml(p.name)}" style="background-image:linear-gradient(135deg, ${color}, #38bdf8)"></div>
       <div class="place-text">
         <strong>${escapeHtml(p.name)}</strong>
         <span>${escapeHtml(p.region)} · ${escapeHtml(p.type)}</span>
@@ -126,7 +125,7 @@ function showCard(p) {
   $('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' Iceland')}`;
   $('imageLink').href = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(p.name + ' Iceland')}`;
   $('imageLink').textContent = 'Open Wikipedia';
-  $('cardFallback').textContent = REGION_EMOJI[p.region] || '🇮🇸';
+  $('cardFallback').textContent = '';
   const img = $('cardImg');
   img.style.backgroundImage = `linear-gradient(135deg, ${REGION_COLORS[p.region] || '#0f766e'}, #38bdf8)`;
   loadWikiImage(p.name).then(url => {

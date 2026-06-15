@@ -65,7 +65,7 @@ const PLACES = [
   },
   {
     "name": "Glanni",
-    "region": "South Iceland",
+    "region": "West Iceland",
     "lat": 64.755,
     "lng": -21.548,
     "type": "Waterfall",
@@ -145,7 +145,7 @@ const PLACES = [
   },
   {
     "name": "Jökulsárlón",
-    "region": "East Iceland",
+    "region": "South Iceland",
     "lat": 64.0481,
     "lng": -16.1794,
     "type": "Glacier lagoon",
@@ -153,7 +153,7 @@ const PLACES = [
   },
   {
     "name": "Diamond Beach",
-    "region": "East Iceland",
+    "region": "South Iceland",
     "lat": 64.0436,
     "lng": -16.1771,
     "type": "Beach",
@@ -161,7 +161,7 @@ const PLACES = [
   },
   {
     "name": "Heinabergsjökull",
-    "region": "East Iceland",
+    "region": "South Iceland",
     "lat": 64.258,
     "lng": -15.628,
     "type": "Glacier area",
@@ -169,7 +169,7 @@ const PLACES = [
   },
   {
     "name": "Skaftafell",
-    "region": "East Iceland",
+    "region": "South Iceland",
     "lat": 64.0167,
     "lng": -16.9667,
     "type": "National park area",
@@ -177,7 +177,7 @@ const PLACES = [
   },
   {
     "name": "Svartifoss",
-    "region": "East Iceland",
+    "region": "South Iceland",
     "lat": 64.0275,
     "lng": -16.9753,
     "type": "Waterfall",
@@ -377,7 +377,7 @@ const PLACES = [
   },
   {
     "name": "Dynjandi",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.7328,
     "lng": -23.1998,
     "type": "Waterfall",
@@ -385,7 +385,7 @@ const PLACES = [
   },
   {
     "name": "Látrabjarg",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.502,
     "lng": -24.531,
     "type": "Bird cliffs",
@@ -393,7 +393,7 @@ const PLACES = [
   },
   {
     "name": "Rauðisandur",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.466,
     "lng": -24.032,
     "type": "Beach",
@@ -401,7 +401,7 @@ const PLACES = [
   },
   {
     "name": "Hellulaug",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.579,
     "lng": -23.159,
     "type": "Hot spring",
@@ -409,7 +409,7 @@ const PLACES = [
   },
   {
     "name": "Pollurinn",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.836,
     "lng": -23.987,
     "type": "Hot pots",
@@ -417,7 +417,7 @@ const PLACES = [
   },
   {
     "name": "Krossneslaug",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 66.056,
     "lng": -21.513,
     "type": "Remote pool",
@@ -425,7 +425,7 @@ const PLACES = [
   },
   {
     "name": "Reykjafjarðarlaug",
-    "region": "West Iceland",
+    "region": "Westfjords",
     "lat": 65.623,
     "lng": -23.469,
     "type": "Hot spring pool",
@@ -433,7 +433,7 @@ const PLACES = [
   },
   {
     "name": "Hvalfjörður",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.375,
     "lng": -21.574,
     "type": "Fjord",
@@ -441,7 +441,7 @@ const PLACES = [
   },
   {
     "name": "Glymur",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.385,
     "lng": -21.251,
     "type": "Waterfall hike",
@@ -449,7 +449,7 @@ const PLACES = [
   },
   {
     "name": "Kirkjufell",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.9417,
     "lng": -23.3069,
     "type": "Mountain",
@@ -457,7 +457,7 @@ const PLACES = [
   },
   {
     "name": "Snæfellsjökull National Park",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.805,
     "lng": -23.773,
     "type": "National park",
@@ -465,7 +465,7 @@ const PLACES = [
   },
   {
     "name": "Rauðfeldsgjá",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.747,
     "lng": -23.646,
     "type": "Gorge",
@@ -473,7 +473,7 @@ const PLACES = [
   },
   {
     "name": "Landbrotalaug",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.833,
     "lng": -22.324,
     "type": "Hot spring",
@@ -481,7 +481,7 @@ const PLACES = [
   },
   {
     "name": "Arnarstapi",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.766,
     "lng": -23.627,
     "type": "Coastal village",
@@ -489,7 +489,7 @@ const PLACES = [
   },
   {
     "name": "Hellnar",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 64.752,
     "lng": -23.649,
     "type": "Coastal village",
@@ -497,7 +497,7 @@ const PLACES = [
   },
   {
     "name": "Guðrúnarlaug",
-    "region": "North West Iceland",
+    "region": "West Iceland",
     "lat": 65.246,
     "lng": -21.805,
     "type": "Hot spring",
