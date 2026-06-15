@@ -496,6 +496,14 @@ const PLACES = [
     "desc": "A small historic coastal settlement with dramatic lava cliffs and views of Snæfellsjökull."
   },
   {
+    "name": "Mánabakki camp site",
+    "region": "North Iceland",
+    "lat": 66.142,
+    "lng": -17.185,
+    "type": "Campsite",
+    "desc": "A scenic campsite on the Tjörnes peninsula near Húsavík with sweeping sea views. Only nice if the weather is good."
+  },
+  {
     "name": "Guðrúnarlaug",
     "region": "West Iceland",
     "lat": 65.246,
