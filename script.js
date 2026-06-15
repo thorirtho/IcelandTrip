@@ -23,6 +23,7 @@ let map, layer, activeRegion = "All", currentPlaces = [...PLACES];
 const CACHE_KEY = 'iceland.wikiImg.v1';
 const CACHE_TTL = 1000 * 60 * 60 * 24 * 30; // 30 days
 const imageCache = loadPersistedCache();
+const inflight = new Map();
 
 function loadPersistedCache() {
   const m = new Map();
@@ -118,16 +119,25 @@ function render() {
 
 function lazyLoadThumbs() {
   const thumbs = document.querySelectorAll('.place-thumb');
-  thumbs.forEach((el, i) => {
+  let pendingIdx = 0;
+  thumbs.forEach((el) => {
+    const name = el.dataset.name;
+    if (imageCache.has(name)) {
+      const url = imageCache.get(name);
+      if (url) {
+        el.style.backgroundImage = `url('${url}')`;
+        el.classList.add('loaded');
+      }
+      return;
+    }
     setTimeout(() => {
-      const name = el.dataset.name;
       loadWikiImage(name).then(url => {
         if (url) {
           el.style.backgroundImage = `url('${url}')`;
           el.classList.add('loaded');
         }
       });
-    }, i * 60);
+    }, (pendingIdx++) * 60);
   });
 }
 
@@ -174,28 +184,34 @@ function showCard(p) {
 
 async function loadWikiImage(title) {
   if (imageCache.has(title)) return imageCache.get(title);
-  const queries = [`${title} Iceland`, title];
-  for (const q of queries) {
-    try {
-      const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=3&prop=pageimages&piprop=original%7Cthumbnail&pithumbsize=600&origin=*`;
-      const r = await fetch(url);
-      if (!r.ok) continue;
-      const j = await r.json();
-      const pages = j && j.query && j.query.pages ? Object.values(j.query.pages) : [];
-      pages.sort((a, b) => (a.index || 99) - (b.index || 99));
-      for (const p of pages) {
-        const src = (p.original && p.original.source) || (p.thumbnail && p.thumbnail.source);
-        if (src) {
-          imageCache.set(title, src);
-          persistCache();
-          return src;
+  if (inflight.has(title)) return inflight.get(title);
+  const p = (async () => {
+    const queries = [`${title} Iceland`, title];
+    for (const q of queries) {
+      try {
+        const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=3&prop=pageimages&piprop=original%7Cthumbnail&pithumbsize=600&origin=*`;
+        const r = await fetch(url);
+        if (!r.ok) continue;
+        const j = await r.json();
+        const pages = j && j.query && j.query.pages ? Object.values(j.query.pages) : [];
+        pages.sort((a, b) => (a.index || 99) - (b.index || 99));
+        for (const pg of pages) {
+          const src = (pg.original && pg.original.source) || (pg.thumbnail && pg.thumbnail.source);
+          if (src) {
+            imageCache.set(title, src);
+            persistCache();
+            return src;
+          }
         }
-      }
-    } catch (e) {}
-  }
-  imageCache.set(title, null);
-  persistCache();
-  return null;
+      } catch (e) {}
+    }
+    imageCache.set(title, null);
+    persistCache();
+    return null;
+  })();
+  inflight.set(title, p);
+  p.finally(() => inflight.delete(title));
+  return p;
 }
 function shortDesc(s){ return s.length > 62 ? s.slice(0,61) + '…' : s; }
 function escapeHtml(s){ return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
